@@ -120,8 +120,8 @@ int main(void) {
   palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL);              /* New CS.      */
 
   palSetPadMode(GPIOA, 9, PAL_MODE_STM32_ALTERNATE_PUSHPULL);      /* USART1 TX.       */
-  palSetPadMode(GPIOA, 10, PAL_MODE_STM32_ALTERNATE_PUSHPULL);     /* USART1 RX.       */
- 
+  palSetPadMode(GPIOA, 10, PAL_MODE_INPUT); 
+
   sdStart(&SD1, NULL);
 
   spiAcquireBus(&SPID2);              /* Acquire ownership of the bus.    */
@@ -144,7 +144,7 @@ int main(void) {
   while (TRUE) {
 //    cio_printf("Sending payload: %x ", p.data[0]);
     chprintf((BaseSequentialStream *) &SD1, "Sending payload: %x ", p.data[0]);
-  s = nrf_send_blocking(&p);
+    s = nrf_send_blocking(&p);
 //    cio_printf(" - done; bytes send: %u\n\r", s);
     chprintf((BaseSequentialStream *) &SD1, " - done; bytes send: %u\n\r", s);
 
