@@ -36,43 +36,41 @@ static msg_t blinker(void *arg) {
 
 void nrf_dump_regs(nrf_regs *r) {
 
-	int i;
-	int j;
+    int i;
+    int j;
 
 //	cio_print("\n\r** START nRF2401 Register DUMP **\n\r");
-	chprintf((BaseSequentialStream *) &SD1, "\n\r** START nRF2401 Register DUMP **\n\r");
+    chprintf((BaseSequentialStream *) &SD1, "\n\r** START nRF2401 Register DUMP **\n\r");
 
-	nrf_reg_buf buf;
+    nrf_reg_buf buf;
 
-	for(i = 0; i < r->count; i++) {
+    for(i = 0; i < r->count; i++) {
 
-		nrf_read_reg(i, &buf);
+	    nrf_read_reg(i, &buf);
 
-		if(r->data[i].size == 0) continue;
+	    if(r->data[i].size == 0) continue;
 
 //		cio_printf("%s: ", r->data[i].name);
-		chprintf((BaseSequentialStream *) &SD1, "%s: ", r->data[i].name);
+	    chprintf((BaseSequentialStream *) &SD1, "%s: ", r->data[i].name);
 
-		for(j = 0; j < buf.size; j++) {
+	    for(j = 0; j < buf.size; j++) {
 //			cio_printb(buf.data[j], 8);
 //			cio_printf(" (%u) ", buf.data[j]);
-			chprintf((BaseSequentialStream *) &SD1, " (%u) ", buf.data[j]);
-		}
+		    chprintf((BaseSequentialStream *) &SD1, " (%u) ", buf.data[j]);
+	    }
 
-//		cio_print("\n\r - ");
-		chprintf((BaseSequentialStream *) &SD1,"\n\r - ");
+	    chprintf((BaseSequentialStream *) &SD1,"\n\r - ");
 
-/*		for(j = 0; j < r->data[i].fields->count; j++) {
-			cio_printf("%u[%u]:%s=%u ", j,
-				r->data[i].fields->data[j].size,
-				r->data[i].fields->data[j].name,
-				nrf_get_reg_field(i, j, &buf));
-		}*/
+	    for(j = 0; j < r->data[i].fields->count; j++) {
+		    chprintf((BaseSequentialStream *) &SD1, "%u[%u]:%s=%u ", j,
+			    r->data[i].fields->data[j].size,
+			    r->data[i].fields->data[j].name,
+			    nrf_get_reg_field(i, j, &buf));
+	    }
 
-		chprintf((BaseSequentialStream *) &SD1,"\n\r - ");
-	}
-	chprintf((BaseSequentialStream *) &SD1,"** END **\n\r");
-//	cio_print("** END nRF2401 Register DUMP **\n\r");
+	    chprintf((BaseSequentialStream *) &SD1,"\n\r - ");
+    }
+    chprintf((BaseSequentialStream *) &SD1,"** END **\n\r");
 }
 
 /**
@@ -80,19 +78,19 @@ void nrf_dump_regs(nrf_regs *r) {
  */
 void nrf_configure_sb_tx(void) {
 
-	// Set address for TX and receive on P0
- 	nrf_reg_buf addr;
+    // Set address for TX and receive on P0
+    nrf_reg_buf addr;
 
-	addr.data[0] = 1;
-	addr.data[1] = 2;
-	addr.data[2] = 3;
-	addr.data[3] = 4;
-	addr.data[4] = 5;
+    addr.data[0] = 1;
+    addr.data[1] = 2;
+    addr.data[2] = 3;
+    addr.data[3] = 4;
+    addr.data[4] = 5;
 
-	nrf_preset_sb(NRF_MODE_PTX, 40, 1, &addr);
-	
-	// Wait for radio to power up
-	chThdSleepMilliseconds(300);
+    nrf_preset_sb(NRF_MODE_PTX, 40, 1, &addr);
+    
+    // Wait for radio to power up
+    chThdSleepMilliseconds(300);
 }
 
 /*
@@ -142,10 +140,8 @@ int main(void) {
   p.data[0] = 0;
 
   while (TRUE) {
-//    cio_printf("Sending payload: %x ", p.data[0]);
     chprintf((BaseSequentialStream *) &SD1, "Sending payload: %x ", p.data[0]);
     s = nrf_send_blocking(&p);
-//    cio_printf(" - done; bytes send: %u\n\r", s);
     chprintf((BaseSequentialStream *) &SD1, " - done; bytes send: %u\n\r", s);
 
     chThdSleepMilliseconds(100);
